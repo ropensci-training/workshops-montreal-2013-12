@@ -29,20 +29,20 @@ splist_tnrs <- tnrs(query=splist, getpost="POST", source_ = "iPlant_TNRS")
 # Let's assume the names in the "acceptedName" column are correct (and they should be).
 
 # So here's our updated species list
-(splist <- as.character(splist_tnrs$acceptedName))
+(splist <- as.character(splist_tnrs$acceptedname))
 ```
 
 Another thing we may want to do is collect common names for our taxa. 
 
 ```{r commonnames, eval=TRUE, cache=TRUE}
 tsns <- get_tsn(searchterm=splist, searchtype="sciname", verbose=FALSE)
-comnames <- lapply(tsns, getcommonnamesfromtsn)
+comnames <- sci2comm(tsns, simplify=TRUE)
 
 # Unfortunately, common names are not standardized like species names, so there are multiple common names for each taxon
 sapply(comnames, length)
 
 # So let's just take the first common name for each species
-comnames_vec <- do.call(c, lapply(comnames, function(x) as.character(x[1,"comname"])))
+comnames_vec <- sapply(comnames, function(x) x[[1]])
 
 # And we can make a data.frame of our scientific and common names
 (allnames <- data.frame(spname = splist, comname = comnames_vec))
@@ -57,13 +57,14 @@ class_list <- classification(tsns)
 # And we can attach these names to our allnames data.frame
 library(plyr)
 gethiernames <- function(x){
-  temp <- x[,c("rankName","taxonName")]
+  temp <- x[,c("rank","name")]
   values <- data.frame(t(temp[,2]))
   names(values) <- temp[,1]
   return( values )
-  }
+}
 class_df <- ldply(class_list, gethiernames)
 allnames_df <- merge(allnames, class_df, by.x="spname", by.y="Species")
+allnames_df$spname <- as.character(allnames_df$spname)
 
 # Now that we have allnames_df, we can start to see some relationships among species simply by their shared taxonomic names
 allnames_df[1:2,]
@@ -79,14 +80,14 @@ library(ggplot2)
 ### Get occurences 
 
 ```{r getgbifdata, cache=TRUE}
-occurr_list <- occurrencelist_many(as.character(allnames$spname), coordinatestatus = TRUE, maxresults = 100,  fixnames="change")
+mynames <- lapply(allnames_df$spname, function(x) name_backbone(name=x, kingdom='plants')$speciesKey)
+mynames <- compact(mynames)
+occurr_list <- occ_search(mynames, georeferenced=TRUE, limit=50, return='data')
+occurr_data <- ldply(occurr_list)
 ```
 
 ### Make a map
 
 ```{r makemap, cache=TRUE, fig.height=4, fig.width=6}
-gbifmap_list(occurr_list) +
-  guides(col = guide_legend(title="", nrow = 3, byrow = TRUE)) + 
-  theme(legend.position="bottom", legend.key = element_blank()) +
-  coord_equal()
+gbifmap(occurr_data)
 ```

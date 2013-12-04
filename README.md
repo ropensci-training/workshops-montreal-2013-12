@@ -16,7 +16,7 @@ You'll be able to copy-paste all of the code provided here directly into RStudio
 
 |Topic|Time|
 |---------------|-------|
-|**Introduction to rOpenSci** [slides](http://ropensci.github.io/workshops-sheffield-2013-09/00-introduction/intro_slides/index.html) | 2:55 - 3:15 |
+|**Introduction to rOpenSci** [slides](http://ropensci.github.io/workshops-montreal-2013-12/00-introduction/intro_slides/index.html) | 2:55 - 3:15 |
 |**rOpenSci demos 1** *Biodiversity records*  | 3:15 - 4:00 |
 |**Break**| 4:00 - 4:10 |
 |**rOpenSci demos 2** *Taxonomic names* | 4:10 - 4:45 |
