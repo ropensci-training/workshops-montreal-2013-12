@@ -31,10 +31,26 @@ data(wrld_simpl)
 
 ### Get GBIF data using the rOpenSci package rgbif.
 
+Lookup names
+
 ```{r sdm3, cache=TRUE}
-df <- occurrencelist(scientificname='bradypus*', coordinatestatus=TRUE, maxresults=500)
-df <- gbifdata(df, coordinatestatus=TRUE)
-df2 <- data.frame(lon=df$decimalLongitude, lat=df$decimalLatitude)
+namesdf <- name_lookup(query='bradypus*', rank="SPECIES", limit=60)$data
+head(namesdf)
+```
+
+Get some name keys
+
+```{r sdm4, cache=TRUE}
+keys <- na.omit(unique(namesdf$nubKey))
+```
+
+Get occurrence data
+
+```{r sdm5, cache=TRUE}
+df <- occ_search(keys, georeferenced=TRUE, limit=100, return='data')
+df <- df[sapply(df, class) == "data.frame"]
+df2 <- ldply(df)
+df2 <- data.frame(lon=df2$longitude, lat=df2$latitude)
 ```
 
 ### Plot: (1) Add raster data, (2) Add political boundaries, (3) Add the points (occurrences)
@@ -48,5 +64,7 @@ points(df2, col='blue')
 ### Further reading
 
 The above example comes from [this tutorial][sdm] on species distribution modeling. 
+
+Warning: tutorial no longer there...
 
 [sdm]: http://cran.r-project.org/web/packages/dismo/vignettes/sdm.pdf

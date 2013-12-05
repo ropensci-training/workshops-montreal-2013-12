@@ -1,0 +1,58 @@
+## rgbif use case No. 2 - Biodiversity comparisons across cities
+
+*Note that authorities are temporarily attached to species names - but this will be fixed to only canonical name soon*
+
+In this example, we compare biodiversity in different Canadian cities using GBIF data from `rgbif`.
+
+```{r defaults, eval=TRUE, echo=FALSE, cache=TRUE}
+opts_chunk$set(comment=NA, warning=FALSE, message=FALSE, fig.width=7, fig.height=6)
+```
+
+### Load libraries
+
+```{r load}
+library(rgbif)
+library(ggplot2)
+library(plyr)
+library(maps)
+```
+
+### Get GBIF data using the rOpenSci package rgbif.
+
+We'll not restrain our search to any particular taxonomic group, although you will likely do that in your own research. Let's get some Canadian cities shall we.
+
+```{r getcities}
+ca_names <- canada.cities[canada.cities$pop > 50000, c('name','lat','long')]
+ca_names2 <- ca_names
+coordinates(ca_names2) <- c("lat","long")
+# ca_names <- sapply(ca_names, function(x) strsplit(x, " ")[[1]][[1]], USE.NAMES=FALSE)
+```
+
+Then pass these into `occ_search` to get some data from GBIF.
+
+```{r stuff}
+foo <- function(df) occ_search(latitude=df$lat, longitude=df$long, limit=10, minimal=FALSE, return='data')
+dlply(ca_names[1:2,], .(name), foo)
+```
+
+### 
+```{r}
+
+library(rgeos)
+g3 <- readWKT("POLYGON((1 1,5 1,5 5,1 5,1 1),(2 2,2 3,3 3,3 2,2 2))")
+# writeWKT(g3)
+writeWKT(ca_names2[1,])
+
+as.SpatialPointsDataFrame.ppp(from=ca_names2[1,])
+```
+
+```{r}
+library(geosphere)
+pol <- rbind(c(-180,-20), c(-160,5), c(-60, 0), c(-160,-60), c(-180,-20))
+plot(pol)
+lines(pol, col='red', lwd=3)
+pol2 = makePoly(pol, interval=100000)
+lines(pol2, col='blue', lwd=2)
+
+makePoly(c(-180,-20), interval=100000)
+```
