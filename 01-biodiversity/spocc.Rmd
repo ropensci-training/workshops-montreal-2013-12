@@ -11,16 +11,17 @@ library(rCharts)
 
 ```{r sources}
 out <- occ(query='Accipiter striatus', from='gbif')
-out@gbif@data # a data.frame
-out@ebird@data # empty
-out@gbif@meta #  metadata, your query parameters, time the call executed, etc. 
+out$gbif # GBIF data w/ metadata
+out$ebird$data # empty
+out$gbif$meta #  metadata, your query parameters, time the call executed, etc. 
+out$gbif$data # just data
 ```
 
 And you can squash together data from sources easily
 
 ```{r manysources}
 out <- occ(query='Accipiter striatus', from=c('gbif','bison'))
-occtodf(out, 'data')
+head( occ2df(out) )
 ```
 
 
@@ -29,6 +30,8 @@ occtodf(out, 'data')
 Try changing the species names to whatever you like and press **Submit**
 
 Or change the background map, or the color palette. 
+
+**This may not work using RStudio server**
 
 ```{r shinymap, eval=FALSE}
 mapshiny()
@@ -39,8 +42,8 @@ mapshiny()
 
 ```{r rcharts, eval=FALSE}
 spp <- c('Danaus plexippus','Accipiter striatus','Pinus contorta')
-dat <- occlist(query=spp, from='gbif', gbifopts=list(georeferenced=TRUE))
-dat <- occtodfspp(dat, 'data')
+dat <- occ(query=spp, from='gbif', gbifopts=list(georeferenced=TRUE))
+dat <- occ2df(dat)
 maprcharts(data=dat)
 ```
 

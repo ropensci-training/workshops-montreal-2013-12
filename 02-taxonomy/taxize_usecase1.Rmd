@@ -29,20 +29,19 @@ splist_tnrs <- tnrs(query=splist, getpost="POST", source_ = "iPlant_TNRS")
 # Let's assume the names in the "acceptedName" column are correct (and they should be).
 
 # So here's our updated species list
-(splist <- as.character(splist_tnrs$acceptedname))
+(splist <- as.character(splist_tnrs$acceptedName))
 ```
 
 Another thing we may want to do is collect common names for our taxa. 
 
 ```{r commonnames, eval=TRUE, cache=TRUE}
-tsns <- get_tsn(searchterm=splist, searchtype="sciname", verbose=FALSE)
-comnames <- sci2comm(tsns, simplify=TRUE)
+comnames <- sci2comm(splist, simplify=TRUE)
 
 # Unfortunately, common names are not standardized like species names, so there are multiple common names for each taxon
-sapply(comnames, length)
+sapply(comnames, nrow)
 
 # So let's just take the first common name for each species
-comnames_vec <- sapply(comnames, function(x) x[[1]])
+comnames_vec <- sapply(comnames, function(x) as.character(x$vernacularName[[1]]), USE.NAMES=FALSE)
 
 # And we can make a data.frame of our scientific and common names
 (allnames <- data.frame(spname = splist, comname = comnames_vec))
@@ -52,12 +51,12 @@ Another common task is getting the taxonomic tree upstream from your study taxa.
 
 ```{r classification, cache=TRUE}
 # Let's get classifications from ITIS using Taxonomic Serial Numbers. Note that we could use uBio instead.
-class_list <- classification(tsns)
+class_list <- classification(splist, db="itis")
 
 # And we can attach these names to our allnames data.frame
 library(plyr)
 gethiernames <- function(x){
-  temp <- x[,c("rank","name")]
+  temp <- x[,c("rankName","taxonName")]
   values <- data.frame(t(temp[,2]))
   names(values) <- temp[,1]
   return( values )
@@ -82,7 +81,7 @@ library(ggplot2)
 ```{r getgbifdata, cache=TRUE}
 mynames <- lapply(allnames_df$spname, function(x) name_backbone(name=x, kingdom='plants')$speciesKey)
 mynames <- compact(mynames)
-occurr_list <- occ_search(mynames, georeferenced=TRUE, limit=50, return='data')
+occurr_list <- occ_search(taxonKey=mynames, georeferenced=TRUE, limit=50, return='data')
 occurr_data <- ldply(occurr_list)
 ```
 
