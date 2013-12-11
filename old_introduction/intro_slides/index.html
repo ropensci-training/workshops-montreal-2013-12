@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reproducible research in R</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Reproducible research in R">
+  <meta name="author" content="Scott Chamberlain (scott@ropensci.org)">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/solarized_light.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/opensource.css"></link>
+<link rel=stylesheet href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Reproducible research in R</h1>
+    <h2></h2>
+    <p>Scott Chamberlain (scott@ropensci.org)<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <article data-timings="">
+    <p><br><br><br>
+<center> 
+    <font size="40"> <a href="http://bit.ly/montreal_wkshp"><a href="http://bit.ly/montreal_wkshp">http://bit.ly/montreal_wkshp</a></a> </font> 
+</center><br><br>
+<center> 
+    <font size="40"> Made with <a href="http://slidify.org/">Slidify</a>; the code <a href="https://github.com/SChamberlain/posterstalks/blob/gh-pages/plosalm13/index.Rmd">here</a> </font>
+</center><br><br>
+<center> 
+    <font size="40"> Press &quot;o&quot; to bring up all slides - &quot;w&quot; to change aspect - &quot;g&quot; to go to page </font>
+</center></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <article data-timings="">
+    <p><br><br></p>
+
+<h3>License: CC-BY 3.0 - You are free to copy, share, adapt, or remix, photograph, film, or broadcast, blog, live-blog, or post video of this presentation, provided that you attribute the work to its author and respect the rights and licenses associated with its components.</h3>
+
+<p><br><br></p>
+
+<h3>Icons: by <a href="http://fortawesome.github.io/Font-Awesome/">FontAwesome</a></h3>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Science needs to be more...</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><br><br></p>
+
+<div class="row"><center><img src="assets/img/unlock.png"></img><img src="assets/img/spinner.png"></img></center></div>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <article data-timings="">
+    <p><br><br><br>
+<font size="14">
+    <center> <font color="green"> <i class="fa fa-unlock">&nbsp;Open:</i></font> to increase pace of science - most research publicly funded - etc.</center><br><br>
+    <center><font color="blue"><i class="fa fa-spinner">&nbsp;Reproducible:</i></font> for yourself!, and for others (if reproducible, more confidence in results)</center>
+</font></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Or maybe you&#39;re really lazy (aka: you want science to be easier)</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><br><br>
+<center><img src="assets/img/lazyboy.jpg"></img></center></p>
+
+<p><a href="http://www.ebay.com/itm/M-M-Dispenser-LA-Z-BOY-RECLINER-CHAIR-with-Remote-Control-/400593996036?afsrc=1">link</a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <article data-timings="">
+    <p><br><br><br>
+<font size="14">
+    <center>What tools do we need to achieve this goal?</center>
+</font></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>Not these!</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><center><img src="assets/img/closedtools.png" alt=""></center></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>These!</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><center><img src="assets/img/opentools.png" alt=""></center></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>Data is increasingly on the web</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><center><img src="assets/img/data.png" alt=""></center></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>Connecting scientists to open data on the web</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><br>
+<center><img src="assets/img/ropensci_main.png" alt=""></center></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-11" style="background:;">
+  <article data-timings="">
+    <p><center><img src="assets/img/ropensci_pkgs.png" alt=""></center></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-12" style="background:;">
+  <article data-timings="">
+    <p><br><br><br>
+<center>
+    <font size="40">Data acquisition <i class="fa fa-plus"></i> data manipulation <i class="fa fa-plus"></i> data analysis <i class="fa fa-plus"></i> data visualization <i class="fa fa-bar-chart-o"></i> - combined with tools for writing <i class="fa fa-pencil"></i> in R, including <code>knitr</code> and <code>Markdown/LaTeX</code> - make an open science workflow <i class="fa fa-spinner"></i></font>
+</center></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-13" style="background:;">
+  <article data-timings="">
+    <p><br><br><br>
+<center>
+    <font size="40"> <font color="blue"><strong>DATA ACQUISITION</strong></font> <i class="fa fa-plus"></i> data manipulation <i class="fa fa-plus"></i> data analysis <i class="fa fa-plus"></i> data visualization <i class="fa fa-bar-chart-o"></i> - combined with tools for writing <i class="fa fa-pencil"></i> in <code>R</code>, including <code>knitr</code> and <code>Markdown/LaTeX</code> - make an open science workflow <i class="fa fa-spinner"></i></font>
+</center></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>Public Library of Science full text - <code>rplos</code></h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(rplos)
+plot_throughtime(list(&quot;reproducible science&quot;), 500)
+</code></pre>
+
+<p><img src="assets/fig/plos.png" title="plot of chunk plos" alt="plot of chunk plos" width="700px" height="500px" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>Mapping biodiversity data - <code>rgbif</code></h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(rgbif)
+key &lt;- name_backbone(name = &quot;Danaus plexippus&quot;, kingdom = &quot;animals&quot;)$speciesKey
+out &lt;- occ_search(taxonKey = key, limit = 300, return = &quot;data&quot;)
+gbifmap(out)
+</code></pre>
+
+<p><img src="assets/fig/rgbif.png" title="plot of chunk rgbif" alt="plot of chunk rgbif" width="700px" height="500px" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-16" style="background:;">
+  <hgroup>
+    <h2>Projected climate data - <code>rWBclimate</code></h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(rWBclimate)
+country_dat &lt;- get_historical_temp(c(&quot;USA&quot;, &quot;MEX&quot;, &quot;CAN&quot;, &quot;BLZ&quot;), &quot;year&quot;)
+ggplot(country_dat, aes(x = year, y = data, group = locator)) + 
+  theme_bw(base_size=18) + geom_point() + geom_path() + labs(y=&quot;Average annual temperature of Canada&quot;, x=&quot;Year&quot;) + 
+  stat_smooth(se = F, colour = &quot;black&quot;) + facet_wrap(~locator, scale = &quot;free&quot;)
+</code></pre>
+
+<p><img src="assets/fig/rWBclimate.png" title="plot of chunk rWBclimate" alt="plot of chunk rWBclimate" width="700px" height="400px" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>Unified species occurrence data - <code>spocc</code></h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(spocc)
+library(rCharts)
+spnames &lt;- c(&quot;Accipiter striatus&quot;, &quot;Setophaga caerulescens&quot;, &quot;Spinus tristis&quot;)
+out &lt;- occlist(query = spnames, from = c(&quot;gbif&quot;, &quot;bison&quot;), gbifopts = list(georeferenced = TRUE))
+data &lt;- occtodfspp(out, &quot;data&quot;)
+</code></pre>
+
+<p>Various plotting options</p>
+
+<ul>
+<li>rCharts: <code>maprcharts(data)</code></li>
+<li>GitHub gist: <code>mapgist(data)</code></li>
+<li>CartoDB: <code>mapcartodb(data)</code></li>
+<li>RStudio&#39;s Shiny: <code>mapshiny(data)</code></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>Workflows side by side</h2>
+  </hgroup>
+  <article data-timings="">
+    
+<div style='float:left;width:48%;' class='centered'>
+  <h3>Our worklow now</h3>
+
+<ul>
+<li>Browser</li>
+<li>Excel</li>
+<li>SAS</li>
+<li>SigmaPlot</li>
+<li>Word</li>
+<li>Endnote</li>
+</ul>
+
+<p>Cost = $$$$$$$<br>
+Learn = many different programs</p>
+
+</div>
+<div style='float:right;width:48%;'>
+  <h3>What it could be</h3>
+
+<ul>
+<li>R</li>
+</ul>
+
+<p>Cost = <del>$$$$$$$</del><br>
+Learn = 1 program</p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-19" style="background:;">
+  <article data-timings="">
+    <p><br><br><br></p>
+
+<p><font size="18"><center> This workshop on the interwebs: <a href="http://bit.ly/montreal_wkshp"><a href="http://bit.ly/montreal_wkshp">http://bit.ly/montreal_wkshp</a></a> </center></font>
+<br><br>
+<font size="18"><center> <a href="http://software-carpentry.org/bootcamps/index.html#future">Montreal Software Carpentry 2 day Bootcamp</a> </center></font></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-20" style="background:;">
+  <article data-timings="">
+    <p><br><br><br></p>
+
+<p><font size="18"><center> rOpenSci on the web: <a href="http://ropensci.org/"><a href="http://ropensci.org/">http://ropensci.org/</a></a> </center></font>
+<br><br>
+<font size="18"><center><a href="https://twitter.com/ropensci"><i class="fa fa-twitter"></i> - @ropensci</a> </center></font></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title=''>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title=''>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Science needs to be more...'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title=''>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Or maybe you&#39;re really lazy (aka: you want science to be easier)'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title=''>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Not these!'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='These!'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Data is increasingly on the web'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Connecting scientists to open data on the web'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title=''>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title=''>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title=''>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Public Library of Science full text - <code>rplos</code>'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Mapping biodiversity data - <code>rgbif</code>'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Projected climate data - <code>rWBclimate</code>'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Unified species occurrence data - <code>spocc</code>'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Workflows side by side'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title=''>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title=''>
+         20
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

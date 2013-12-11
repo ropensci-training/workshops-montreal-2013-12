@@ -193,3 +193,11 @@ Learn = 1 program
 <font size="18"><center> rOpenSci on the web: <a href="http://ropensci.org/">http://ropensci.org/</a> </center></font>
 <br><br>
 <font size="18"><center><a href="https://twitter.com/ropensci"><i class="fa fa-twitter"></i> - @ropensci</a> </center></font>
+
+---
+
+<br><br><br>
+
+Please take our survey so we can make these workshops better :)
+
+<font size="18"><center> <a href="http://ropensci.org/quebec_survey">http://ropensci.org/quebec_survey</a>  </center></font>
