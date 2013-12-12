@@ -2,7 +2,7 @@
 [![](ropensci_logo.png)](http://ropensci.org/)
 # QCBS Workshop
 **December 12th, 14:55 - 16:55**
-*ROOM???*
+*ROOM C*
 
 Welcome to the GitHub repository for the QCBS workshop. All the code and packages included in this material is already installed on our RStudio server. You'll simply need to login [here](http://rstudio.ropensci.org/) with the credentials provided to you at the workshop.
 
@@ -18,9 +18,9 @@ You'll be able to copy-paste all of the code provided here directly into RStudio
 |---------------|-------|
 |**Setup-Make sure all widgets are whirling**| 2:55 - 3:00 |
 |**Introduction to rOpenSci** [slides](http://ropensci.github.io/workshops-montreal-2013-12/00-introduction/intro_slides/index.html) | 3:00 - 3:15 |
-|**rOpenSci demos 1** *Biodiversity records*  | 3:15 - 4:00 |
-|**Break**| 4:00 - 4:10 |
-|**rOpenSci demos 2** *Taxonomic names* | 4:10 - 4:45 |
+|**rOpenSci demos 1** *Taxonomic names*  | 3:15 - 3:50 |
+|**Break**| 3:50 - 4:00 |
+|**rOpenSci demos 2** *Biodiversity records* | 4:00 - 4:45 |
 |**Wrap up and discussion**  | 4:45 - 4:55 |
 
 ## Feedback
