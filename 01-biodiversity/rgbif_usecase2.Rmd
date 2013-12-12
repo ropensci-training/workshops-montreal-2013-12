@@ -1,62 +1,85 @@
-## rgbif use case No. 2 - Biodiversity comparisons across cities
+## rgbif use case No. 3 - Finding countries species are found in using rgbif
 
-In this example, we compare biodiversity in different regsions using GBIF data from rgbif.
+### Load some libraries
 
-This example can be done using BISON data as well with our rbison package.
-
-```{r defaults, eval=TRUE, echo=FALSE, cache=TRUE}
-opts_chunk$set(comment=NA, warning=FALSE, message=FALSE, fig.width=7, fig.height=6)
-```
-
-### Load libraries
-
-```{r load}
+```{r}
 library(rgbif)
-library(ggplot2)
 library(plyr)
 library(doMC)
 ```
 
-### Get GBIF data using the rOpenSci package rgbif.
+### List of bird species
 
-We'll not restrain our search to any particular taxonomic group, although you will likely do that in your own research. We'll make a new column with single lat/long coordinates for each cell for easy plotting. Last, we'll select 100 random cell IDs.
-
-```{r getbounding}
-temp <- gbifdata(densitylist(originisocountrycode = "US"))
-temp <- transform(temp, lat = (minLatitude + maxLatitude)/2, lon = (minLongitude + 
-    maxLongitude)/2)
-cellids <- sample(temp$cellid, 100)
-
-# temp <- gbifdata(densitylist(originisocountrycode="US"))
-# temp <- transform(temp, lat = (minLatitude+maxLatitude)/2, lon = (minLongitude+maxLongitude)/2) 
-# cellids <- sample(temp$cellid, 100)
+```{r}
+spplist <- c('Geothlypis trichas','Tiaris olivacea','Pterodroma axillaris','Calidris ferruginea','Pterodroma macroptera','Gallirallus australis','Falco cenchroides','Telespiza cantans','Oreomystis bairdi','Cistothorus palustris')
 ```
 
-Then search for data for each of those cell ID's. We'll define a function to pass in each cell ID.
+### Get GBIF keys for each taxon
 
-```{r getdata}
-getdata <- function(x, maxresults=100){
-  out <- occurrencelist(cellid=x, coordinatestatus=TRUE, maxresults=maxresults)
-  df <- gbifdata(out, coordinatestatus=TRUE)
-  data.frame(cellid=x, richness=length(unique(df$taxonName)))
+```{r}
+keys <- sapply(spplist, function(x) name_backbone(x, rank="species")$usageKey)
+# remove NULLs
+keys <- compact(keys)
+```
+
+### Get country names (from rgbif package)
+
+For brevity we'll just use 25 countries
+
+```{r}
+countrynames <- as.character(isocodes$gbif_name)[1:25]
+```
+
+### Get data
+
+Function to get data for each name
+
+```{r}
+occ_by_countries <- function(spkey){
+  occ_count_safe <- plyr::failwith(NULL, occ_count)
+  tmp <- lapply(countrynames, function(x) occ_count_safe(spkey, country=x))
+  names(tmp) <- countrynames
+  tmp[grep("No enum", tmp)] <- NA
+  tmp
 }
-
-registerDoMC(cores=4)
-out <- ldply(cellids, getdata, .parallel=TRUE)
-out2 <- merge(out, temp[,c('cellid','lat','lon')], by='cellid')
-# remove points outside the US
-out3 <- out2[out2$lat < 49 & out2$lat > 24.7433195 & out2$lon > -130 & out2$lon < -66.9513812,]
 ```
 
-### Plot data
+Get data for each species
 
-```{r plot}
-mapp <- map_data("state")
-ggplot(mapp, aes(long, lat)) + 
-  geom_polygon(aes(group = group), fill = "white", alpha = 0, color = "gray80", size = 0.8) + 
-  geom_point(data = out3, aes(lon, lat, color = richness), size = 3, alpha = 0.8) + 
-  scale_color_gradient2(low = "white", mid = "lightblue", high = "blue") + 
-  labs(x = "", y = "") + 
-  theme_bw(base_size = 14) + 
-  theme(legend.position = "bottom", legend.key = element_blank())
+```{r}
+registerDoMC(cores=4) 
+out <- llply(keys, occ_by_countries, .parallel=TRUE)
+```
+
+Or you could do the same without doing in parallel, but will be slower of course
+
+```{r eval=FALSE}
+out <- lapply(keys, occ_by_countries)
+```
+
+### Assign species name to each output element
+
+Then make a data.frame, then remove NA rows
+
+```{r}
+names(out) <- spplist
+df <- ldply(out, function(x){
+  tmp <- ldply(x)
+  names(tmp)[1] <- "country"
+  tmp
+})
+df <- na.omit(df) # remove NAs (which were caused by errors in country names)
+```
+
+And you can get only countries they're found in by removing zeros
+
+```{r}
+# Get only countries found in
+df_foundin <- df[!df$V1==0,]
+```
+
+Look at first and last six rows
+
+```{r}
+head(df_foundin); tail(df_foundin)
 ```

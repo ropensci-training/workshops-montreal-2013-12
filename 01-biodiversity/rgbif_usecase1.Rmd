@@ -14,6 +14,7 @@ opts_chunk$set(comment=NA, warning=FALSE, message=FALSE, fig.width=7, fig.height
 library(rgbif)
 library(dismo)
 library(maptools)
+library(plyr)
 ```
 
 ### Make a list of files that are installed with the dismo package, then create a rasterStack from these

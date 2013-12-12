@@ -21,14 +21,13 @@ Next install:
 
 ```coffee
 install.packages("ggplot2", dependencies = TRUE)
-install.packages("dismo")
-install.packages("maptools")
-install.packages("knitr") # for reproducible documents
-install.packages("rgbif")
-install.packages("rplos")
-install.packages("rfisheries")
-install.packages("rfigshare")
+install.packages(c("taxize","rgbif","rbison","rWBclimate","rebird","knitr","maptools","dismo","scales","doMC","plyr","vegan","shiny"))
+```
 
 # from GitHub
-install_github("rWBclimate",  "ropensci")
+
+```coffee
+install_github(c("ropensci/spocc","ropensci/rnpn","ropensci/rinat","ropensci/rnoaa","ramnathv/rCharts"))
 ```
+
+I may have missed a few dependencies. If so, apologies in advance. 

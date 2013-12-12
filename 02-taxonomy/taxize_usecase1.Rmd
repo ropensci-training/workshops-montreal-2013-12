@@ -35,13 +35,13 @@ splist_tnrs <- tnrs(query=splist, getpost="POST", source_ = "iPlant_TNRS")
 Another thing we may want to do is collect common names for our taxa. 
 
 ```{r commonnames, eval=TRUE, cache=TRUE}
-comnames <- sci2comm(splist, simplify=TRUE)
+comnames <- sci2comm(splist, db="itis", simplify=TRUE)
 
 # Unfortunately, common names are not standardized like species names, so there are multiple common names for each taxon
 sapply(comnames, nrow)
 
 # So let's just take the first common name for each species
-comnames_vec <- sapply(comnames, function(x) as.character(x$vernacularName[[1]]), USE.NAMES=FALSE)
+comnames_vec <- sapply(comnames, function(x) as.character(x$comname[[1]]), USE.NAMES=FALSE)
 
 # And we can make a data.frame of our scientific and common names
 (allnames <- data.frame(spname = splist, comname = comnames_vec))
