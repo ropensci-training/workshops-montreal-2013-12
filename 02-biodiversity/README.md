@@ -3,7 +3,7 @@
 
 1. Gbif, Bison, Vertnet, taxize
     * rGBIF
-    * Taxize
+    * taxize
     * Vernet
 2. rWBClimate, rNOAA
     * NOAA precipitation data as sparklines
