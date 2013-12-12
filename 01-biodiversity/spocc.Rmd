@@ -2,14 +2,14 @@
 
 ### Load libraries
 
-```{r load}
+```{r load, message=FALSE, warning=FALSE}
 library(spocc)
 library(rCharts)
 ```
 
 ### spocc unifies access to biodiversity data across sources
 
-```{r sources}
+```{r sources, message=FALSE, warning=FALSE}
 out <- occ(query='Accipiter striatus', from='gbif')
 out$gbif # GBIF data w/ metadata
 out$ebird$data # empty
@@ -19,7 +19,7 @@ out$gbif$data # just data
 
 And you can squash together data from sources easily
 
-```{r manysources}
+```{r manysources, message=FALSE, warning=FALSE}
 out <- occ(query='Accipiter striatus', from=c('gbif','bison'))
 head( occ2df(out) )
 ```

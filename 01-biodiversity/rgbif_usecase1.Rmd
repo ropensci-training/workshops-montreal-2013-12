@@ -10,7 +10,7 @@ opts_chunk$set(comment=NA, warning=FALSE, message=FALSE, fig.width=7, fig.height
 
 ### Load libraries
 
-```{r load, comment=NA, cache=TRUE}
+```{r load, comment=NA, cache=FALSE}
 library(rgbif)
 library(dismo)
 library(maptools)
@@ -19,14 +19,14 @@ library(plyr)
 
 ### Make a list of files that are installed with the dismo package, then create a rasterStack from these
 
-```{r sdm1, cache=TRUE}
+```{r sdm1, cache=FALSE}
 files <- list.files(paste(system.file(package="dismo"), '/ex', sep=''), 'grd', full.names=TRUE)
 predictors <- stack(files)
 ```
 
 ### Get world boundaries.
 
-```{r sdm2, cache=TRUE}
+```{r sdm2, cache=FALSE}
 data(wrld_simpl)
 ```
 
@@ -34,20 +34,20 @@ data(wrld_simpl)
 
 Lookup names
 
-```{r sdm3, cache=TRUE}
+```{r sdm3, cache=FALSE}
 namesdf <- name_lookup(query='bradypus*', rank="SPECIES", limit=60)$data
 head(namesdf)
 ```
 
 Get some name keys
 
-```{r sdm4, cache=TRUE}
+```{r sdm4, cache=FALSE}
 keys <- na.omit(unique(namesdf$nubKey))
 ```
 
 Get occurrence data
 
-```{r sdm5, cache=TRUE}
+```{r sdm5, cache=FALSE}
 df <- occ_search(keys, georeferenced=TRUE, limit=100, return='data')
 df <- df[sapply(df, class) == "data.frame"]
 df2 <- ldply(df)
@@ -56,7 +56,7 @@ df2 <- data.frame(lon=df2$longitude, lat=df2$latitude)
 
 ### Plot: (1) Add raster data, (2) Add political boundaries, (3) Add the points (occurrences)
 
-```{r sdm4, cache=TRUE}
+```{r sdm6, cache=FALSE}
 plot(predictors, 1)
 plot(wrld_simpl, add=TRUE)
 points(df2, col='blue')

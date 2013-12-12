@@ -1,35 +1,18 @@
-## taxize use case No. 2 - Make a phylogeny from species names alone
+## Collect common names from taxonomic names
 
-There is only functionality for plants right now in taxize. We hope to add more taxan groups soon.
+You may want to collect taxonomic names for some reason in your research. taxize has a number of ways to do this. One is using `sci2comm` function
 
-```{r defaults, eval=TRUE, echo=FALSE, cache=TRUE}
-opts_chunk$set(comment=NA, warning=FALSE, message=FALSE, fig.width=7, fig.height=6)
-```
+```{r commonnames, eval=TRUE, cache=TRUE}
+splist <- c("Helianthus annuus","Pinus contorta","Collomia grandiflora","Abies magnifica","Rosa californica","Datura wrightii","Mimulus bicolor","Nicotiana glauca","Madia sativa","Bartlettia scaposa")
 
-### Load libraries
+comnames <- sci2comm(splist, db="itis", simplify=TRUE)
 
-```{r load}
-library(taxize)
-```
+# Unfortunately, common names are not standardized like species names, so there are multiple common names for each taxon
+sapply(comnames, nrow)
 
-```{r thespecieslist, cache=TRUE}
-taxa <- c("Poa annua", "Collomia grandiflora", "Lilium lankongense", "Phlox diffusa", "Iteadaphne caudata", "Gagea sarmentosa", "Helianthus annuus")
-```
+# So let's just take the first common name for each species
+comnames_vec <- sapply(comnames, function(x) as.character(x$comname[[1]]), USE.NAMES=FALSE)
 
-### Phylomatic is a web service with an API that we can use to get a phylogeny. Fetch phylogeny from phylomatic 
-
-```{r phylogeny, cache=TRUE, message=FALSE, warning=FALSE}
-phylogeny <- phylomatic_tree(taxa=taxa, get = 'POST')
-```
-
-### Format tip-labels
-
-```{r, cache=TRUE}
-phylogeny$tip.label <- taxize_capwords(phylogeny$tip.label, onlyfirst=TRUE)
-```
-
-### Plot phylogeny 
-
-```{r, cache=TRUE}
-plot(phylogeny)
+# And we can make a data.frame of our scientific and common names
+(allnames <- data.frame(spname = splist, comname = comnames_vec))
 ```
